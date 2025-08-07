@@ -62,79 +62,61 @@ export default function PatientsPage() {
 
     return (
         <>
-           <div className="h-screen flex flex-col bg-gray-50">
-  {/* Header - stays at top */}
-  <ProfileHeader />
+            <ProfileHeader />
+            <div className="min-h-screen bg-gray-50 flex">
+                <div className="w-80 bg-white border-r border-gray-200 p-4">
+                    <Button onClick={() => {
+                        setShowAddForm(true);
+                        setEditingPatient(null);
+                    }} className="w-full mb-6 bg-red-600 hover:bg-red-700 text-white">
+                        <Plus className="w-4 h-4 mr-2" />
+                        Add Patient
+                    </Button>
 
-  {/* Body - flex layout below header */}
-  <div className="flex flex-1">
-    {/* LEFT SIDEBAR (fixed height, no scroll) */}
-    <div className="w-80 bg-white border-r border-gray-200 p-4 overflow-hidden">
-      <Button
-        onClick={() => {
-          setShowAddForm(true);
-          setEditingPatient(null);
-        }}
-        className="w-full mb-6 bg-red-600 hover:bg-red-700 text-white"
-      >
-        <Plus className="w-4 h-4 mr-2" />
-        Add Patient
-      </Button>
+                    <PatientsList
+                        data={data}
+                        isLoading={getIsLoading}
+                        selectedPatient={selectedPatient}
+                        setSelectedPatient={setSelectedPatient}
+                    />
+                </div>
 
-      <PatientsList
-        data={data}
-        isLoading={getIsLoading}
-        selectedPatient={selectedPatient}
-        setSelectedPatient={setSelectedPatient}
-      />
-    </div>
+                <div className="flex-1 p-6">
+                    {showAddForm && (<AddPatientForm
+                        onSubmit={addPatient}
+                        onCancel={() => setShowAddForm(false)}
+                        isLoading={addIsLoading}
+                    />)}
 
-    {/* RIGHT SIDE - scroll only this section */}
-    <div className="flex-1 overflow-auto p-6">
-      {showAddForm && (
-        <AddPatientForm
-          onSubmit={addPatient}
-          onCancel={() => setShowAddForm(false)}
-          isLoading={addIsLoading}
-        />
-      )}
+                    {editingPatient && (
+                        <EditPatientForm
+                            patient={editingPatient}
+                            onSubmit={updatePatient}
+                            onCancel={() => setEditingPatient(null)}
+                            isLoading={editIsLoading}
+                        />
+                    )}
 
-      {editingPatient && (
-        <EditPatientForm
-          patient={editingPatient}
-          onSubmit={updatePatient}
-          onCancel={() => setEditingPatient(null)}
-          isLoading={editIsLoading}
-        />
-      )}
+                    {!showAddForm && !editingPatient && selectedPatient && (
+                        <PatientDetails
+                            patient={selectedPatient}
+                            onEdit={() => setEditingPatient(selectedPatient)}
+                            onDelete={() => deletePatient(selectedPatient?.id)}
+                            isLoading={deleteIsLoading}
+                        />
+                    )}
 
-      {!showAddForm && !editingPatient && selectedPatient && (
-        <PatientDetails
-          patient={selectedPatient}
-          onEdit={() => setEditingPatient(selectedPatient)}
-          onDelete={() => deletePatient(selectedPatient?.id)}
-          isLoading={deleteIsLoading}
-        />
-      )}
-
-      {!showAddForm && !editingPatient && !selectedPatient && (
-        <div className="flex items-center justify-center h-full">
-          <div className="text-center">
-            <User className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-gray-600 mb-2">
-              Select a Patient
-            </h3>
-            <p className="text-gray-500">
-              Choose a patient from the list to view details
-            </p>
-          </div>
-        </div>
-      )}
-    </div>
-  </div>
-</div>
-
-
+                    {!showAddForm && !editingPatient && !selectedPatient && (
+                        <div className="flex items-center justify-center h-full">
+                            <div className="text-center">
+                                <User className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                                <h3 className="text-xl font-semibold text-gray-600 mb-2">Select a Patient</h3>
+                                <p className="text-gray-500">Choose a patient from the list to view details</p>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            </div>
         </>
     )
 }
