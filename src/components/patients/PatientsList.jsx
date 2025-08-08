@@ -1,9 +1,12 @@
 import { Hospital, User } from 'lucide-react';
 import { Card, CardContent } from '../../components/ui/Card';
+import { setScanId } from '../../redux/scanIdSlice';
+import { useDispatch } from 'react-redux';
 
 
 function PatientsList({ data, selectedPatient, setSelectedPatient, isLoading }) {
-    const skeletonArray = Array(5).fill(null)
+    const skeletonArray = Array(5).fill(null);
+    const dispatch = useDispatch();
 
     return (
         <div className="space-y-2">
@@ -31,7 +34,10 @@ function PatientsList({ data, selectedPatient, setSelectedPatient, isLoading }) 
                         key={patient.id}
                         className={`cursor-pointer transition-all hover:shadow-md ${selectedPatient?.id === patient.id ? "ring-2 ring-red-500 bg-red-50" : ""
                             }`}
-                        onClick={() => setSelectedPatient(patient)}
+                        onClick={() => {
+                            dispatch(setScanId(""));
+                            setSelectedPatient(patient)
+                        }}
                     >
                         <CardContent className="p-3">
                             <div className="flex items-center space-x-3">

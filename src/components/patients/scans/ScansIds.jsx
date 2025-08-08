@@ -4,13 +4,17 @@ import { Button } from "../../ui/Button"
 import { Skeleton } from "../../ui/skeleton";
 import { useState } from "react";
 import UploadModal from "./upload/UploadModal";
-import { useLazyGetScansResultQuery } from "../../../service/scanApi";
+import { useGetScansQuery, useLazyGetScansResultQuery } from "../../../service/scanApi";
 import ScansResultTabs from "./tabs/ScansResultTabs";
+import { useDispatch, useSelector } from "react-redux";
+import { setScanId } from "../../../redux/scanIdSlice";
 
-export default function ScansIds({ scanData, isLoading, patient }) {
-    const [scanId, setScanId] = useState("");
+export default function ScansIds({ patient }) {
+    const dispatch = useDispatch();
+    const { scanId } = useSelector((state) => state.scanId);
     const [isUploadModalOpen, setIsUploadModalOpen] = useState("");
     const [localLoading, setLocalLoading] = useState(false);
+    const { data: scanData, isLoading } = useGetScansQuery({ patient_id: patient?.id });
     const [triggerScanResult, { data: scanResultData }] = useLazyGetScansResultQuery();
 
     if (isLoading) {
@@ -34,7 +38,7 @@ export default function ScansIds({ scanData, isLoading, patient }) {
     }
 
     const handleTabClick = async (scanId) => {
-        setScanId(scanId);
+        dispatch(setScanId(scanId));
         setLocalLoading(true);
         try {
             await triggerScanResult(
@@ -83,7 +87,7 @@ export default function ScansIds({ scanData, isLoading, patient }) {
             </Card>
 
 
-            {scanId && !scanResultData?.feedback?.has_feedback && (<ScansResultTabs
+            {scanId && (<ScansResultTabs
                 scanResultData={scanResultData}
                 isLoading={localLoading}
             />)}

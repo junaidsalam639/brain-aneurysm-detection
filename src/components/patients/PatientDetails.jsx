@@ -13,14 +13,10 @@ import {
 import { Card, CardContent, CardTitle } from "../ui/Card"
 import { Button } from "../ui/Button"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion";
-import { useGetScansQuery } from "../../service/scanApi";
-import { useSelector } from "react-redux";
 import ScansIds from "./scans/ScansIds";
 
 export default function PatientDetails({ patient, onEdit, onDelete, isLoading }) {
     const history = patient?.history?.split(",") || [];
-    const { user } = useSelector((state) => state.auth);
-    const { data: scanData, isLoading: getScanIsLoading } = useGetScansQuery(user?.id);
 
     const handleDelete = () => {
         onDelete();
@@ -119,7 +115,7 @@ export default function PatientDetails({ patient, onEdit, onDelete, isLoading })
                     </Accordion>
                 </CardContent>
             </Card>
-            <ScansIds scanData={scanData} isLoading={getScanIsLoading} patient={patient} />
+            <ScansIds patient={patient} />
         </>
     )
 }

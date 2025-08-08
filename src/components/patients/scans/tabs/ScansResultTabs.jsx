@@ -93,7 +93,7 @@ export default function ScansResultTabs({ scanResultData, isLoading }) {
                     {renderTabContent()}
                 </div>
 
-                <FeedbackSection scanResultData={scanResultData} />
+                {!scanResultData?.feedback?.has_feedback && <FeedbackSection scanResultData={scanResultData} />}
             </Card>
         </>
     )
