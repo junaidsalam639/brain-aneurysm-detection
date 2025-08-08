@@ -1,0 +1,100 @@
+import { Card } from "../../ui/Card"
+import { ScanEye, Upload } from 'lucide-react'
+import { Button } from "../../ui/Button"
+import { Skeleton } from "../../ui/skeleton";
+import { useState } from "react";
+import UploadModal from "./upload/UploadModal";
+import { useLazyGetScansResultQuery } from "../../../service/scanApi";
+import ScansResultTabs from "./tabs/ScansResultTabs";
+
+export default function ScansIds({ scanData, isLoading, patient }) {
+    const [scanId, setScanId] = useState("");
+    const [isUploadModalOpen, setIsUploadModalOpen] = useState("");
+    const [localLoading, setLocalLoading] = useState(false);
+    const [triggerScanResult, { data: scanResultData }] = useLazyGetScansResultQuery();
+
+    if (isLoading) {
+        return (
+            <Card className="p-4 mt-4">
+                <div className="grid md:grid-cols-6 gap-2">
+                    {Array.from({ length: 6 }).map((_, idx) => (
+                        <Skeleton key={idx} className="h-12 w-full rounded-lg" />
+                    ))}
+                </div>
+            </Card>
+        );
+    }
+
+    if (!scanData?.length) {
+        return (
+            <Card className="p-4 mt-4 text-gray-500 text-sm">
+                No scan results available.
+            </Card>
+        );
+    }
+
+    const handleTabClick = async (scanId) => {
+        setScanId(scanId);
+        setLocalLoading(true);
+        try {
+            await triggerScanResult(
+                { patient_id: patient?.id, scan_id: scanId },
+                { forceRefetch: true }
+            );
+        } catch (error) {
+            console.error("Failed to fetch scan result:", error);
+        } finally {
+            setLocalLoading(false);
+        }
+    };
+
+    return (
+        <>
+            <Card className="p-4 my-4">
+                <div className="mb-6 flex justify-between items-center">
+                    <div>
+                        <h1 className="text-2xl font-bold text-red-600">Medical Scan Analysis</h1>
+                        <p className="text-gray-600">Advanced AI-powered medical scan processing</p>
+                    </div>
+                    <Button
+                        onClick={() => setIsUploadModalOpen(true)}
+                        className="bg-red-600 hover:bg-red-700 text-white"
+                    >
+                        <Upload className="w-4 h-4 mr-2" />
+                        Upload New Scan
+                    </Button>
+                </div>
+                <div className="space-y-2 grid md:grid-cols-6 gap-2 justify-center items-baseline">
+                    {scanData?.map((scan) => (
+                        <button
+                            key={scan?.scan_id}
+                            onClick={() => handleTabClick(scan?.scan_id)}
+                            className={`w-full p-3 rounded-lg flex h-12 items-center space-x-3 text-sm font-medium transition-all
+                            ${scanId === scan?.scan_id
+                                    ? "bg-red-50 text-red-700 border-l-4 border-red-600"
+                                    : "bg-gray-100 text-gray-700"
+                                }`}
+                        >
+                            <ScanEye className="w-5 h-5" />
+                            <span>ID: {scan?.scan_id}</span>
+                        </button>
+                    ))}
+                </div>
+            </Card>
+
+
+            {scanId && !scanResultData?.feedback?.has_feedback && (<ScansResultTabs
+                scanResultData={scanResultData}
+                isLoading={localLoading}
+            />)}
+
+            <UploadModal
+                isOpen={isUploadModalOpen}
+                onClose={() => setIsUploadModalOpen(false)}
+                patient={patient}
+            />
+
+        </>
+    )
+}
+

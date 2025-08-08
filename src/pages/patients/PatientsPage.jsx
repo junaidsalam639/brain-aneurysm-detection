@@ -4,12 +4,11 @@ import AddPatientForm from '../../components/patients/AddPatientForm';
 import EditPatientForm from '../../components/patients/EditPatientForm';
 import PatientDetails from '../../components/patients/PatientDetails';
 import { Button } from '../../components/ui/Button';
-import {Plus, User } from 'lucide-react';
+import { Plus, User } from 'lucide-react';
 import { useAddPatientsMutation } from '../../service/patientsApi';
 import toast from 'react-hot-toast';
 import ProfileHeader from '../../components/layout/ProfileHeader';
 import PatientsList from '../../components/patients/PatientsList';
-
 
 export default function PatientsPage() {
     const { data, isLoading: getIsLoading } = useGetPatientsQuery();
@@ -63,8 +62,8 @@ export default function PatientsPage() {
     return (
         <>
             <ProfileHeader />
-            <div className="min-h-screen bg-gray-50 flex">
-                <div className="w-80 bg-white border-r border-gray-200 p-4">
+            <div className="flex h-screen">
+                <aside className="w-80 bg-white border-r border-gray-200 p-4">
                     <Button onClick={() => {
                         setShowAddForm(true);
                         setEditingPatient(null);
@@ -79,9 +78,8 @@ export default function PatientsPage() {
                         selectedPatient={selectedPatient}
                         setSelectedPatient={setSelectedPatient}
                     />
-                </div>
-
-                <div className="flex-1 p-6">
+                </aside>
+                <main className="flex-1 overflow-y-auto p-6 bg-gray-100">
                     {showAddForm && (<AddPatientForm
                         onSubmit={addPatient}
                         onCancel={() => setShowAddForm(false)}
@@ -115,8 +113,9 @@ export default function PatientsPage() {
                             </div>
                         </div>
                     )}
-                </div>
+                </main>
             </div>
+
         </>
     )
 }

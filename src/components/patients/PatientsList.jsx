@@ -58,3 +58,4 @@ function PatientsList({ data, selectedPatient, setSelectedPatient, isLoading }) 
 
 
 export default PatientsList
+
