@@ -7,6 +7,7 @@ const scanApi = createAPI.injectEndpoints({
         }),
         getScansResult: build.query({
             query: ({ patient_id, scan_id }) => `/patients/${patient_id}/scans/${scan_id}/result`,
+            providesTags: ['ScansResult']
         }),
     }),
 });

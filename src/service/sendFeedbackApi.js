@@ -10,6 +10,7 @@ const sendFeedbackApi = createAPI.injectEndpoints({
                     body: formData,
                 }
             },
+            invalidatesTags: ['ScansResult']
         }),
     }),
 });

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDeletePatientsMutation, useGetPatientsQuery, useUpdatePatientsMutation } from '../../service/patientsApi'
 import AddPatientForm from '../../components/patients/AddPatientForm';
 import EditPatientForm from '../../components/patients/EditPatientForm';
@@ -59,10 +59,18 @@ export default function PatientsPage() {
         }
     }
 
+    useEffect(() => {
+        document.body.style.overflow = "hidden";
+        return () => {
+            document.body.style.overflow = "auto";
+        };
+    }, []);
+
+
     return (
         <>
             <ProfileHeader />
-            <div className="flex h-screen">
+            <div className="flex h-screen pb-20">
                 <aside className="w-80 bg-white border-r border-gray-200 p-4">
                     <Button onClick={() => {
                         setShowAddForm(true);

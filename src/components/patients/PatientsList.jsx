@@ -32,8 +32,7 @@ function PatientsList({ data, selectedPatient, setSelectedPatient, isLoading }) 
                 : data?.map((patient) => (
                     <Card
                         key={patient.id}
-                        className={`cursor-pointer transition-all hover:shadow-md ${selectedPatient?.id === patient.id ? "ring-2 ring-red-500 bg-red-50" : ""
-                            }`}
+                        className={`cursor-pointer transition-all hover:shadow-md ${selectedPatient?.id === patient.id ? "ring-2 ring-red-500 bg-red-50" : ""}`}
                         onClick={() => {
                             dispatch(setScanId(""));
                             setSelectedPatient(patient)

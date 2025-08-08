@@ -29,14 +29,6 @@ export default function ScansIds({ patient }) {
         );
     }
 
-    if (!scanData?.length) {
-        return (
-            <Card className="p-4 mt-4 text-gray-500 text-sm">
-                No scan results available.
-            </Card>
-        );
-    }
-
     const handleTabClick = async (scanId) => {
         dispatch(setScanId(scanId));
         setLocalLoading(true);

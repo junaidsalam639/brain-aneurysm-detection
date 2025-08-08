@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Card } from "../../../ui/Card"
-import { FileText, Brain, Scissors, Ruler, Shield, Eye, Stethoscope, Pill, AlertTriangle, DollarSign, FlaskConical } from 'lucide-react'
+import { FileText, Brain, Scissors, Ruler, Shield, Eye, Stethoscope, Pill, AlertTriangle, DollarSign, FlaskConical, MessageSquare } from 'lucide-react'
 import ScanIntakeContent from "./ScanIntakeContent"
 import ClassificationContent from "./ClassificationContent"
 import SegmentationContent from "./SegmentationContent"
@@ -12,7 +12,7 @@ import TreatmentContent from "./TreatmentContent"
 import RuptureRiskContent from "./RuptureRiskContent"
 import BillingContent from "./BillingContent"
 import ClinicalTrialsContent from "./ClinicalTrialsContent"
-import FeedbackSection from "../FeedbackSection"
+import FeedbackSection from "./FeedbackSection"
 import PageLoader from "../../../ui/PageLoader"
 
 export default function ScansResultTabs({ scanResultData, isLoading }) {
@@ -29,7 +29,8 @@ export default function ScansResultTabs({ scanResultData, isLoading }) {
         { id: "treatment_recommendations", label: "Treatment", icon: Pill },
         { id: "rupture_risk_agent", label: "Rupture Risk", icon: AlertTriangle },
         { id: "billing_optimization_agent", label: "Billing", icon: DollarSign },
-        { id: "clinical_trials_matching_agent", label: "Clinical Trials", icon: FlaskConical }
+        { id: "clinical_trials_matching_agent", label: "Clinical Trials", icon: FlaskConical },
+        { id: "feed_back", label: "Feed Back", icon: MessageSquare }
     ]
 
     const renderTabContent = () => {
@@ -56,6 +57,8 @@ export default function ScansResultTabs({ scanResultData, isLoading }) {
                 return <BillingContent data={scanResultData?.ai_result?.billing_optimization_agent} />
             case "clinical_trials_matching_agent":
                 return <ClinicalTrialsContent data={scanResultData?.ai_result?.clinical_trials_matching_agent} />
+            case "feed_back":
+                return <FeedbackSection scanResultData={scanResultData?.feedback} />
             default:
                 return <div>Select a tab to view data</div>
         }
@@ -92,8 +95,6 @@ export default function ScansResultTabs({ scanResultData, isLoading }) {
                 <div className="">
                     {renderTabContent()}
                 </div>
-
-                {!scanResultData?.feedback?.has_feedback && <FeedbackSection scanResultData={scanResultData} />}
             </Card>
         </>
     )
