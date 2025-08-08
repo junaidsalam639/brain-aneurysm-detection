@@ -43,6 +43,7 @@ export default function PatientsPage() {
             formData.append("history", updatedValue?.history);
             const response = await editPatientApi({ formData, id: updatedValue?.id }).unwrap();
             toast.success(response?.msg || "Edit Patients Successfully");
+            setSelectedPatient(response?.patient);
             setEditingPatient(null);
         } catch (err) {
             toast.error(err?.data?.detail || "Something went wrong");

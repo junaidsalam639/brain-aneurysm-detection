@@ -47,7 +47,7 @@ export default function ScansIds({ patient }) {
     return (
         <>
             <Card className="p-4 my-4">
-                <div className="mb-6 flex justify-between items-center">
+                <div className="flex justify-between items-center">
                     <div>
                         <h1 className="text-2xl font-bold text-red-600">Medical Scan Analysis</h1>
                         <p className="text-gray-600">Advanced AI-powered medical scan processing</p>
@@ -60,7 +60,7 @@ export default function ScansIds({ patient }) {
                         Upload New Scan
                     </Button>
                 </div>
-                <div className="space-y-2 grid md:grid-cols-6 gap-2 justify-center items-baseline">
+                {scanData?.length > 0 && <div className="mt-4 space-y-2 grid md:grid-cols-6 gap-2 justify-center items-baseline">
                     {scanData?.map((scan) => (
                         <button
                             key={scan?.scan_id}
@@ -75,7 +75,7 @@ export default function ScansIds({ patient }) {
                             <span>ID: {scan?.scan_id}</span>
                         </button>
                     ))}
-                </div>
+                </div>}
             </Card>
 
 

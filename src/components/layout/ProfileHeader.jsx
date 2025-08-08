@@ -12,7 +12,7 @@ export default function ProfileHeader() {
     const dropdownRef = useRef(null);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const {user} = useSelector((state) => state.auth);
+    const { user } = useSelector((state) => state.auth);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
     useEffect(() => {

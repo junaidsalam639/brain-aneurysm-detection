@@ -2,7 +2,7 @@
 import { useState } from "react"
 import { useFormik } from "formik"
 import * as Yup from "yup"
-import { User, Mail, Phone,  Stethoscope, Edit, Save, Beaker } from "lucide-react"
+import { User, Mail, Phone, Stethoscope, Edit, Save, Beaker } from "lucide-react"
 import { Button } from "../ui/Button"
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/Card"
 import { Label } from "../ui/Label"
@@ -11,18 +11,15 @@ import { useSelector } from "react-redux"
 
 
 export default function ProfileForm() {
-    const {user} = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
   const [isEditing, setIsEditing] = useState(false)
   const [profileData, setProfileData] = useState({
-    name: "Dr. Ahmad Hassan",
-    email: "ahmad.hassan@medicare.com",
-    phone: "+92-300-1234567",
-    address: "123 Medical Center, Lahore, Pakistan",
-    specialization: "Cardiology",
-    experience: "8 years",
-    license: "PMC-12345",
-    bio: "Experienced cardiologist with expertise in interventional cardiology and heart disease prevention. Committed to providing excellent patient care and advancing cardiovascular health.",
-    joinDate: "January 2020",
+    name: user?.username || "",
+    email: user?.email || "",
+    phone: user?.phone || "",
+    specialization: user?.specialization || "",
+    experience: user?.experience || "",
+    license: user?.license_number || "",
   })
 
   const formik = useFormik({
@@ -31,11 +28,9 @@ export default function ProfileForm() {
       name: Yup.string().required("Name is required"),
       email: Yup.string().email("Invalid email").required("Email is required"),
       phone: Yup.string().required("Phone is required"),
-      address: Yup.string().required("Address is required"),
       specialization: Yup.string().required("Specialization is required"),
       experience: Yup.string().required("Experience is required"),
       license: Yup.string().required("License is required"),
-      bio: Yup.string().required("Bio is required"),
     }),
     onSubmit: (values) => {
       setProfileData(values)
@@ -149,6 +144,38 @@ export default function ProfileForm() {
                       <p className="text-sm text-red-600">{formik.errors.experience}</p>
                     )}
                   </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="specialization" className="text-sm font-medium text-gray-700">
+                      Specialization
+                    </Label>
+                    <Input
+                      id="specialization"
+                      name="specialization"
+                      value={formik.values.specialization}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      className={formik.touched.specialization && formik.errors.specialization ? "border-red-500" : ""}
+                    />
+                    {formik.touched.specialization && formik.errors.specialization && (
+                      <p className="text-sm text-red-600">{formik.errors.specialization}</p>
+                    )}
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="license" className="text-sm font-medium text-gray-700">
+                      License
+                    </Label>
+                    <Input
+                      id="license"
+                      name="license"
+                      value={formik.values.license}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      className={formik.touched.license && formik.errors.license ? "border-red-500" : ""}
+                    />
+                    {formik.touched.license && formik.errors.license && (
+                      <p className="text-sm text-red-600">{formik.errors.license}</p>
+                    )}
+                  </div>
                 </div>
                 <div className="flex space-x-4 pt-4">
                   <Button type="submit" className="flex-1 bg-red-600 hover:bg-red-700 text-white">
@@ -205,7 +232,7 @@ export default function ProfileForm() {
                   <p className="text-sm text-gray-500">Specialization</p>
                   <p className="font-medium text-lg">{profileData?.specialization}</p>
                 </div>
-                
+
                 <div>
                   <p className="text-sm text-gray-500">License Number</p>
                   <p className="font-medium">{profileData?.license}</p>
