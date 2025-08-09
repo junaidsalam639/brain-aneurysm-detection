@@ -1,47 +1,76 @@
-"use client"
-import { useState } from "react"
-import { useFormik } from "formik"
-import * as Yup from "yup"
-import { User, Mail, Phone, Stethoscope, Edit, Save, Beaker } from "lucide-react"
-import { Button } from "../ui/Button"
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/Card"
-import { Label } from "../ui/Label"
-import { Input } from "../ui/Input"
-import { useSelector } from "react-redux"
-
+"use client";
+import { useState } from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import {
+  User,
+  Mail,
+  Phone,
+  Stethoscope,
+  Edit,
+  Save,
+  Beaker,
+  Loader,
+} from "lucide-react";
+import { Button } from "../ui/Button";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/Card";
+import { Label } from "../ui/Label";
+import { Input } from "../ui/Input";
+import { useDispatch, useSelector } from "react-redux";
+import { useProfileApiMutation } from "../../service/authApi";
+import toast from "react-hot-toast";
+import { setUser } from "../../redux/authSlice";
 
 export default function ProfileForm() {
+  const dispatch = useDispatch();
+  const [profileApi, { isLoading }] = useProfileApiMutation();
   const { user } = useSelector((state) => state.auth);
-  const [isEditing, setIsEditing] = useState(false)
-  const [profileData, setProfileData] = useState({
-    name: user?.username || "",
-    email: user?.email || "",
-    phone: user?.phone || "",
-    specialization: user?.specialization || "",
-    experience: user?.experience || "",
-    license: user?.license_number || "",
-  })
+  const [isEditing, setIsEditing] = useState(false);
 
-  const formik = useFormik({
-    initialValues: profileData,
-    validationSchema: Yup.object({
-      name: Yup.string().required("Name is required"),
-      email: Yup.string().email("Invalid email").required("Email is required"),
-      phone: Yup.string().required("Phone is required"),
-      specialization: Yup.string().required("Specialization is required"),
-      experience: Yup.string().required("Experience is required"),
-      license: Yup.string().required("License is required"),
-    }),
-    onSubmit: (values) => {
-      setProfileData(values)
-      setIsEditing(false)
-    },
-  })
+  const { values, handleBlur, handleSubmit, handleChange, touched, errors } =
+    useFormik({
+      initialValues: {
+        username: user?.username || "",
+        email: user?.email || "",
+        phone: user?.phone || "",
+        specialization: user?.specialization || "",
+        experience: user?.experience || "",
+        license_number: user?.license_number || "",
+      },
+      validationSchema: Yup.object({
+        username: Yup.string().required("Full name is required"),
+        email: Yup.string()
+          .email("Invalid email")
+          .required("Email is required"),
+        phone: Yup.string().required("Phone is required"),
+        specialization: Yup.string().required("Specialization is required"),
+        experience: Yup.string().required("Experience is required"),
+        license_number: Yup.string().required("License is required"),
+      }),
+      onSubmit: async (values) => {
+        try {
+          const formData = new FormData();
+          formData.append("username", values?.username);
+          if (values?.email) formData.append("email", values?.email);
+          if (values?.phone) formData.append("phone", values?.phone);
+          if (values?.experience)
+            formData.append("experience", values?.experience);
+          if (values?.specialization)
+            formData.append("specialization", values?.specialization);
+          if (values?.license_number)
+            formData.append("license_number", values?.license_number);
+          const response = await profileApi({ formData }).unwrap();
+          dispatch(setUser(response?.doctor_info));
+          toast.success(response?.msg || "Profile Successfully");
+        } catch (err) {
+          toast.error(err?.data?.detail || "Something went wrong");
+        }
+      },
+    });
 
   const handleEdit = () => {
-    setIsEditing(true)
-    formik.setValues(profileData)
-  }
+    setIsEditing(true);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -54,12 +83,19 @@ export default function ProfileForm() {
                   <User className="w-10 h-10 text-red-600" />
                 </div>
                 <div>
-                  <h1 className="text-3xl font-bold text-red-600 capitalize">{user?.username}</h1>
-                  <p className="text-gray-500">{profileData?.experience} of experience</p>
+                  <h1 className="text-3xl font-bold text-red-600 capitalize">
+                    {user?.username}
+                  </h1>
+                  <p className="text-gray-500">
+                    {values?.experience} of experience
+                  </p>
                 </div>
               </div>
               {!isEditing && (
-                <Button onClick={handleEdit} className="bg-red-600 hover:bg-red-700 text-white">
+                <Button
+                  onClick={handleEdit}
+                  className="bg-red-600 hover:bg-red-700 text-white"
+                >
                   <Edit className="w-4 h-4 mr-2" />
                   Edit Profile
                 </Button>
@@ -77,110 +113,173 @@ export default function ProfileForm() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <form onSubmit={formik.handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <Label htmlFor="name" className="text-sm font-medium text-gray-700">
+                    <Label
+                      htmlFor="username"
+                      className="text-sm font-medium text-gray-700"
+                    >
                       Full Name
                     </Label>
                     <Input
                       id="name"
-                      name="name"
-                      value={formik.values.name}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      className={formik.touched.name && formik.errors.name ? "border-red-500" : ""}
+                      name="username"
+                      type="text"
+                      value={values.username}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      className={
+                        touched.username && errors.username
+                          ? "border-red-500"
+                          : ""
+                      }
                     />
-                    {formik.touched.name && formik.errors.name && (
-                      <p className="text-sm text-red-600">{formik.errors.name}</p>
+                    {touched.username && errors.username && (
+                      <p className="text-sm text-red-600">{errors.username}</p>
                     )}
                   </div>
+
                   <div className="space-y-2">
-                    <Label htmlFor="email" className="text-sm font-medium text-gray-700">
+                    <Label
+                      htmlFor="email"
+                      className="text-sm font-medium text-gray-700"
+                    >
                       Email
                     </Label>
                     <Input
                       id="email"
                       name="email"
                       type="email"
-                      value={formik.values.email}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      className={formik.touched.email && formik.errors.email ? "border-red-500" : ""}
+                      value={values.email}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      className={
+                        touched.email && errors.email ? "border-red-500" : ""
+                      }
                     />
-                    {formik.touched.email && formik.errors.email && (
-                      <p className="text-sm text-red-600">{formik.errors.email}</p>
+                    {touched.email && errors.email && (
+                      <p className="text-sm text-red-600">{errors.email}</p>
                     )}
                   </div>
+
                   <div className="space-y-2">
-                    <Label htmlFor="phone" className="text-sm font-medium text-gray-700">
+                    <Label
+                      htmlFor="phone"
+                      className="text-sm font-medium text-gray-700"
+                    >
                       Phone
                     </Label>
                     <Input
                       id="phone"
                       name="phone"
-                      value={formik.values.phone}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      className={formik.touched.phone && formik.errors.phone ? "border-red-500" : ""}
+                      type="text"
+                      value={values.phone}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      className={
+                        touched.phone && errors.phone ? "border-red-500" : ""
+                      }
                     />
-                    {formik.touched.phone && formik.errors.phone && (
-                      <p className="text-sm text-red-600">{formik.errors.phone}</p>
+                    {touched.phone && errors.phone && (
+                      <p className="text-sm text-red-600">{errors.phone}</p>
                     )}
                   </div>
+
                   <div className="space-y-2">
-                    <Label htmlFor="experience" className="text-sm font-medium text-gray-700">
+                    <Label
+                      htmlFor="experience"
+                      className="text-sm font-medium text-gray-700"
+                    >
                       Experience
                     </Label>
                     <Input
                       id="experience"
                       name="experience"
-                      value={formik.values.experience}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      className={formik.touched.experience && formik.errors.experience ? "border-red-500" : ""}
+                      type="text"
+                      value={values.experience}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      className={
+                        touched.experience && errors.experience
+                          ? "border-red-500"
+                          : ""
+                      }
                     />
-                    {formik.touched.experience && formik.errors.experience && (
-                      <p className="text-sm text-red-600">{formik.errors.experience}</p>
+                    {touched.experience && errors.experience && (
+                      <p className="text-sm text-red-600">
+                        {errors.experience}
+                      </p>
                     )}
                   </div>
+
                   <div className="space-y-2">
-                    <Label htmlFor="specialization" className="text-sm font-medium text-gray-700">
+                    <Label
+                      htmlFor="specialization"
+                      className="text-sm font-medium text-gray-700"
+                    >
                       Specialization
                     </Label>
                     <Input
                       id="specialization"
                       name="specialization"
-                      value={formik.values.specialization}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      className={formik.touched.specialization && formik.errors.specialization ? "border-red-500" : ""}
+                      type="text"
+                      value={values.specialization}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      className={
+                        touched.specialization && errors.specialization
+                          ? "border-red-500"
+                          : ""
+                      }
                     />
-                    {formik.touched.specialization && formik.errors.specialization && (
-                      <p className="text-sm text-red-600">{formik.errors.specialization}</p>
+                    {touched.specialization && errors.specialization && (
+                      <p className="text-sm text-red-600">
+                        {errors.specialization}
+                      </p>
                     )}
                   </div>
+
                   <div className="space-y-2">
-                    <Label htmlFor="license" className="text-sm font-medium text-gray-700">
+                    <Label
+                      htmlFor="license_number"
+                      className="text-sm font-medium text-gray-700"
+                    >
                       License
                     </Label>
                     <Input
-                      id="license"
-                      name="license"
-                      value={formik.values.license}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      className={formik.touched.license && formik.errors.license ? "border-red-500" : ""}
+                      id="license_number"
+                      name="license_number"
+                      type="text"
+                      value={values.license_number}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      className={
+                        touched.license_number && errors.license_number
+                          ? "border-red-500"
+                          : ""
+                      }
                     />
-                    {formik.touched.license && formik.errors.license && (
-                      <p className="text-sm text-red-600">{formik.errors.license}</p>
+                    {touched.license_number && errors.license_number && (
+                      <p className="text-sm text-red-600">
+                        {errors.license_number}
+                      </p>
                     )}
                   </div>
                 </div>
                 <div className="flex space-x-4 pt-4">
-                  <Button type="submit" className="flex-1 bg-red-600 hover:bg-red-700 text-white">
-                    <Save className="w-4 h-4 mr-2" />
-                    Save Changes
+                  <Button
+                    type="submit"
+                    className="flex-1 bg-red-600 hover:bg-red-700 text-white"
+                  >
+                    {isLoading ? (
+                      <Loader className="animate-spin w-5 h-5" />
+                    ) : (
+                      <>
+                        <Save className="w-4 h-4 mr-2" />
+                        Save Changes
+                      </>
+                    )}
                   </Button>
                 </div>
               </form>
@@ -207,14 +306,14 @@ export default function ProfileForm() {
                   <Phone className="w-5 h-5 text-red-600" />
                   <div>
                     <p className="text-sm text-gray-500">Phone</p>
-                    <p className="font-medium">{profileData?.phone}</p>
+                    <p className="font-medium">{values?.phone}</p>
                   </div>
                 </div>
                 <div className="flex items-center space-x-3">
                   <Beaker className="w-5 h-5 text-red-600" />
                   <div>
                     <p className="text-sm text-gray-500">Experience</p>
-                    <p className="font-medium">{profileData?.experience}</p>
+                    <p className="font-medium">{values?.experience}</p>
                   </div>
                 </div>
               </CardContent>
@@ -230,12 +329,14 @@ export default function ProfileForm() {
               <CardContent className="space-y-4">
                 <div>
                   <p className="text-sm text-gray-500">Specialization</p>
-                  <p className="font-medium text-lg">{profileData?.specialization}</p>
+                  <p className="font-medium text-lg">
+                    {values?.specialization}
+                  </p>
                 </div>
 
                 <div>
                   <p className="text-sm text-gray-500">License Number</p>
-                  <p className="font-medium">{profileData?.license}</p>
+                  <p className="font-medium">{values?.license_number}</p>
                 </div>
               </CardContent>
             </Card>
@@ -243,5 +344,5 @@ export default function ProfileForm() {
         )}
       </div>
     </div>
-  )
+  );
 }

@@ -58,7 +58,7 @@ export default function ScansResultTabs({ scanResultData, isLoading }) {
             case "clinical_trials_matching_agent":
                 return <ClinicalTrialsContent data={scanResultData?.ai_result?.clinical_trials_matching_agent} />
             case "feed_back":
-                return <FeedbackSection scanResultData={scanResultData?.feedback} />
+                return <FeedbackSection scanResultData={scanResultData} />
             default:
                 return <div>Select a tab to view data</div>
         }

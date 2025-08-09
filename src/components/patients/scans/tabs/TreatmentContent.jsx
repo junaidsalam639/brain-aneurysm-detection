@@ -15,16 +15,16 @@ function TreatmentContent({ data }) {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
                         <h4 className="text-blue-800 font-medium text-sm">Patient Age</h4>
-                        <p className="text-2xl font-bold text-blue-900">{data?.treatment_recommendations.patientAge}</p>
+                        <p className="text-2xl font-bold text-blue-900">{data?.treatment_recommendations?.patientAge}</p>
                         <p className="text-xs text-blue-600">years</p>
                     </div>
                     <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-center">
                         <h4 className="text-red-800 font-medium text-sm">Diagnosis</h4>
-                        <p className="text-lg font-bold text-red-900">{data?.treatment_recommendations.diagnosis}</p>
+                        <p className="text-lg font-bold text-red-900">{data?.treatment_recommendations?.diagnosis}</p>
                     </div>
                     <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
                         <h4 className="text-green-800 font-medium text-sm">AI Confidence</h4>
-                        <p className="text-2xl font-bold text-green-900">{data?.treatment_recommendations.aiConfidence}%</p>
+                        <p className="text-2xl font-bold text-green-900">{data?.treatment_recommendations?.aiConfidence}%</p>
                     </div>
                 </div>
 
