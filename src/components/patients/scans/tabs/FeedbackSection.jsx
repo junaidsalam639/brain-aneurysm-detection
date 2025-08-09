@@ -103,7 +103,7 @@ export default function FeedbackSection({ scanResultData }) {
                   disabled={isLoading}
                 />
                 <p className="text-xs text-gray-500">
-                  {feedback.length}/500 characters
+                  {feedback?.length}/500 characters
                 </p>
               </div>
 

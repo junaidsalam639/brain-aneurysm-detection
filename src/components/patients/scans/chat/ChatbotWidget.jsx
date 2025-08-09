@@ -64,8 +64,8 @@ export default function ChatbotWidget() {
                             <div key={index} className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}>
                                 <div
                                     className={`max-w-[75%] p-3 rounded-lg shadow-sm ${msg.sender === "user"
-                                        ? "bg-red-600 text-white rounded-br-none"
-                                        : "bg-gray-200 text-gray-800 rounded-bl-none"
+                                            ? "bg-red-600 text-white rounded-br-none"
+                                            : "bg-gray-200 text-gray-800 rounded-bl-none"
                                         }`}
                                 >
                                     <p className="text-sm">{msg.text}</p>
