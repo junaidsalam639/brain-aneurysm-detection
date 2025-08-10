@@ -72,7 +72,7 @@ export default function TreatmentContent({ data }) {
                         </h3>
                         <div className="grid grid-cols-1 gap-6">
                             <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                                <p className="text-sm font-semibold text-red-800 mb-2">📷 Imaging Required</p>
+                                <p className="text-sm font-semibold text-red-800 mb-2">Imaging Required</p>
                                 {preoperative_workup.imaging_required.length > 0 ? (
                                     <ul className="list-disc list-inside text-gray-700 space-y-1">
                                         {preoperative_workup.imaging_required.map((item, index) => (
@@ -84,7 +84,7 @@ export default function TreatmentContent({ data }) {
                                 )}
                             </div>
                             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                                <p className="text-sm font-semibold text-blue-800 mb-2">🧪 Lab Tests</p>
+                                <p className="text-sm font-semibold text-blue-800 mb-2">Lab Tests</p>
                                 {preoperative_workup.lab_tests.length > 0 ? (
                                     <ul className="list-disc list-inside text-gray-700 space-y-1">
                                         {preoperative_workup.lab_tests.map((item, index) => (
@@ -96,7 +96,7 @@ export default function TreatmentContent({ data }) {
                                 )}
                             </div>
                             <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                                <p className="text-sm font-semibold text-green-800 mb-2">👩‍⚕️ Consultations</p>
+                                <p className="text-sm font-semibold text-green-800 mb-2">Consultations</p>
                                 {preoperative_workup.consultations.length > 0 ? (
                                     <ul className="list-disc list-inside text-gray-700 space-y-1">
                                         {preoperative_workup.consultations.map((item, index) => (

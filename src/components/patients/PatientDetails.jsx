@@ -24,10 +24,10 @@ export default function PatientDetails({ patient, onEdit, onDelete, isLoading })
 
     return (
         <>
-            <Card className="max-w-4xl mx-auto">
+            <Card className="max-w-full mx-auto">
                 <CardContent className="space-y-6 px-4 py-3">
-                    <Accordion type="detail" collapsible>
-                        <AccordionItem value="document">
+                    <Accordion type={patient?.id} collapsible>
+                        <AccordionItem value={patient?.id}>
                             <AccordionTrigger className="text-base font-semibold">
                                 <CardTitle className="text-2xl font-bold text-red-600 flex items-center gap-2">
                                     <User className="w-6 h-6" />

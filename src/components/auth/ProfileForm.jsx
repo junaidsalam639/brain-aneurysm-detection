@@ -39,28 +39,24 @@ export default function ProfileForm() {
       },
       validationSchema: Yup.object({
         username: Yup.string().required("Full name is required"),
-        email: Yup.string()
-          .email("Invalid email")
-          .required("Email is required"),
-        phone: Yup.string().required("Phone is required"),
-        specialization: Yup.string().required("Specialization is required"),
-        experience: Yup.string().required("Experience is required"),
-        license_number: Yup.string().required("License is required"),
+        email: Yup.string().email("Invalid email address"),
+        phone: Yup.number().typeError("Phone must be a number"),
+        experience: Yup.number().typeError("Experience must be a number"),
+        specialization: Yup.string(),
+        license_number: Yup.string(),
       }),
       onSubmit: async (values) => {
         try {
           const formData = new FormData();
           formData.append("username", values?.username);
-          if (values?.email) formData.append("email", values?.email);
-          if (values?.phone) formData.append("phone", values?.phone);
-          if (values?.experience)
-            formData.append("experience", values?.experience);
-          if (values?.specialization)
-            formData.append("specialization", values?.specialization);
-          if (values?.license_number)
-            formData.append("license_number", values?.license_number);
+          formData.append("email", values?.email);
+          formData.append("phone", values?.phone || 0);
+          formData.append("experience", values?.experience || 0);
+          formData.append("specialization", values?.specialization);
+          formData.append("license_number", values?.license_number);
           const response = await profileApi({ formData }).unwrap();
           dispatch(setUser(response?.doctor_info));
+          setIsEditing(false);
           toast.success(response?.msg || "Profile Successfully");
         } catch (err) {
           toast.error(err?.data?.detail || "Something went wrong");
@@ -86,9 +82,6 @@ export default function ProfileForm() {
                   <h1 className="text-3xl font-bold text-red-600 capitalize">
                     {user?.username}
                   </h1>
-                  <p className="text-gray-500">
-                    {values?.experience} of experience
-                  </p>
                 </div>
               </div>
               {!isEditing && (
@@ -120,7 +113,7 @@ export default function ProfileForm() {
                       htmlFor="username"
                       className="text-sm font-medium text-gray-700"
                     >
-                      Full Name
+                      User Name
                     </Label>
                     <Input
                       id="name"
@@ -129,6 +122,7 @@ export default function ProfileForm() {
                       value={values.username}
                       onChange={handleChange}
                       onBlur={handleBlur}
+                      disabled
                       className={
                         touched.username && errors.username
                           ? "border-red-500"
@@ -306,14 +300,14 @@ export default function ProfileForm() {
                   <Phone className="w-5 h-5 text-red-600" />
                   <div>
                     <p className="text-sm text-gray-500">Phone</p>
-                    <p className="font-medium">{values?.phone}</p>
+                    <p className="font-medium">{user?.phone}</p>
                   </div>
                 </div>
                 <div className="flex items-center space-x-3">
                   <Beaker className="w-5 h-5 text-red-600" />
                   <div>
                     <p className="text-sm text-gray-500">Experience</p>
-                    <p className="font-medium">{values?.experience}</p>
+                    <p className="font-medium">{user?.experience}</p>
                   </div>
                 </div>
               </CardContent>
@@ -330,13 +324,13 @@ export default function ProfileForm() {
                 <div>
                   <p className="text-sm text-gray-500">Specialization</p>
                   <p className="font-medium text-lg">
-                    {values?.specialization}
+                    {user?.specialization}
                   </p>
                 </div>
 
                 <div>
                   <p className="text-sm text-gray-500">License Number</p>
-                  <p className="font-medium">{values?.license_number}</p>
+                  <p className="font-medium">{user?.license_number}</p>
                 </div>
               </CardContent>
             </Card>

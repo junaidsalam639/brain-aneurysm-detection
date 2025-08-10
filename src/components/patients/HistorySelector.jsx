@@ -38,8 +38,8 @@ const historyCategories = {
 
 export default function HistorySelector({ selectedHistory, onChange }) {
   const handleToggle = (condition) => {
-    if (selectedHistory.includes(condition)) {
-      onChange(selectedHistory.filter((item) => item !== condition))
+    if (selectedHistory?.includes(condition)) {
+      onChange(selectedHistory?.filter((item) => item !== condition))
     } else {
       onChange([...selectedHistory, condition])
     }
@@ -54,20 +54,30 @@ export default function HistorySelector({ selectedHistory, onChange }) {
             <h4 className="font-medium text-gray-800 text-sm">{category}</h4>
             <div className="space-y-2">
               {conditions.map((condition) => (
-                <label key={condition} className="flex items-center space-x-2 cursor-pointer">
+                <div
+                  key={condition}
+                  className="flex items-center space-x-2 cursor-pointer"
+                  onClick={() => handleToggle(condition)}
+                >
                   <input
                     type="checkbox"
+                    hidden
+                    aria-hidden="true"
                     checked={selectedHistory.includes(condition)}
-                    onChange={() => handleToggle(condition)}
-                    className="sr-only"
+                    readOnly
                   />
                   <div
-                    className={`w-4 h-4 border-2 rounded flex items-center justify-center ${
-                      selectedHistory.includes(condition) ? "bg-red-600 border-red-600" : "border-gray-300"
-                    }`}
+                    className={`w-4 h-4 border-2 rounded flex items-center justify-center ${selectedHistory?.includes(condition)
+                        ? "bg-red-600 border-red-600"
+                        : "border-gray-300"
+                      }`}
                   >
-                    {selectedHistory.includes(condition) && (
-                      <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    {selectedHistory?.includes(condition) && (
+                      <svg
+                        className="w-3 h-3 text-white"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
                         <path
                           fillRule="evenodd"
                           d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
@@ -76,8 +86,10 @@ export default function HistorySelector({ selectedHistory, onChange }) {
                       </svg>
                     )}
                   </div>
-                  <span className="text-sm text-gray-700 capitalize">{condition.replace(/_/g, " ")}</span>
-                </label>
+                  <span className="text-sm text-gray-700 capitalize">
+                    {condition?.replace(/_/g, " ")}
+                  </span>
+                </div>
               ))}
             </div>
           </div>

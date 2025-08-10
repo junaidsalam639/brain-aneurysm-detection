@@ -1,6 +1,6 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "../../../ui/Card"
-import {  DollarSign } from 'lucide-react'
+import { DollarSign } from 'lucide-react'
 
 
 function BillingContent({ data }) {
@@ -33,29 +33,6 @@ function BillingContent({ data }) {
                     <h3 className="text-lg font-semibold text-gray-800 mb-4">Code Explanation</h3>
                     <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
                         <p className="text-gray-700 text-sm leading-relaxed">{data?.explanation}</p>
-                    </div>
-                </div>
-
-                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                    <h4 className="text-yellow-800 font-medium mb-2">Billing Notice</h4>
-                    <p className="text-yellow-700 text-sm">
-                        These are AI-suggested codes based on the analysis results. Please verify with your coding specialist
-                        and ensure all documentation requirements are met before submitting claims.
-                    </p>
-                </div>
-
-                <div>
-                    <h3 className="text-lg font-semibold text-gray-800 mb-4">Additional Considerations</h3>
-                    <div className="space-y-2">
-                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-                            <p className="text-blue-800 text-sm">• Consider additional imaging codes if further studies are performed</p>
-                        </div>
-                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-                            <p className="text-blue-800 text-sm">• Consultation codes may apply for specialist referrals</p>
-                        </div>
-                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-                            <p className="text-blue-800 text-sm">• Document medical necessity for all procedures</p>
-                        </div>
                     </div>
                 </div>
             </CardContent>

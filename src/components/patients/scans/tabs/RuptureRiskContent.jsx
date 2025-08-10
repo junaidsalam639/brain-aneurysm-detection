@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "../../../ui/Card"
-import { AlertTriangle} from 'lucide-react'
+import { AlertTriangle } from 'lucide-react'
 import { Badge } from "../../../ui/badge"
 
 function RuptureRiskContent({ data }) {
@@ -51,14 +51,6 @@ function RuptureRiskContent({ data }) {
                         ))}
                     </div>
                 </div>
-
-                <div className="bg-red-100 border border-red-300 rounded-lg p-4">
-                    <h4 className="text-red-800 font-bold mb-2">URGENT ACTION REQUIRED</h4>
-                    <p className="text-red-700 text-sm">
-                        This case has been flagged as high-risk requiring immediate medical attention.
-                        Please ensure appropriate clinical staff are notified immediately.
-                    </p>
-                </div>
             </CardContent>
         </Card>
     )
@@ -66,3 +58,4 @@ function RuptureRiskContent({ data }) {
 
 
 export default RuptureRiskContent
+

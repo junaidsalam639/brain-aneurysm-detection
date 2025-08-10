@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "../../../ui/Card"
-import {  Stethoscope } from 'lucide-react'
+import { Stethoscope } from 'lucide-react'
 import { Badge } from "../../../ui/badge"
 
 
@@ -44,12 +44,8 @@ function ClinicalContextContent({ data }) {
                             <span className="font-semibold capitalize">{data?.contextual_data?.sex}</span>
                         </div>
                         <div className="flex justify-between">
-                            <span className="text-gray-600">Hospital ID:</span>
-                            <span className="font-semibold">{data?.contextual_data?.hospital_id}</span>
-                        </div>
-                        <div className="flex justify-between">
-                            <span className="text-gray-600">Ethnicity:</span>
-                            <span className="font-semibold">{data?.contextual_data?.ethnicity}</span>
+                            <span className="text-gray-600">history:</span>
+                            <span className="font-semibold">{data?.contextual_data?.history}</span>
                         </div>
                     </div>
                 </div>
@@ -86,9 +82,31 @@ function ClinicalContextContent({ data }) {
                         </div>
                     </div>
                 )}
+
+                {data?.immediate_actions && data?.immediate_actions.length > 0 && (
+                    <div>
+                        <h3 className="text-lg font-semibold text-gray-800 mb-4">Immediate Actions</h3>
+                        <div className="space-y-2">
+                            {data?.immediate_actions.map((rec, index) => (
+                                <div key={index} className="bg-green-50 border border-green-200 rounded-lg p-3">
+                                    <p className="text-green-800 text-sm">• {rec}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
+                <div>
+                    <h3 className="text-lg font-semibold text-gray-800 mb-4">Treatment Considerations</h3>
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                        <p className="text-blue-800">{data?.treatment_considerations || "Treatment Considerations not available"}</p>
+                    </div>
+                </div>
+
             </CardContent>
         </Card>
     )
 }
 
 export default ClinicalContextContent
+

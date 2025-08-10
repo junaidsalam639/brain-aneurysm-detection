@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "../../../ui/Card"
 import {  FlaskConical } from 'lucide-react'
+import ReactMarkdown from 'react-markdown'
 import { Badge } from "../../../ui/badge"
 
 function ClinicalTrialsContent({ data }) {
@@ -92,14 +93,15 @@ function ClinicalTrialsContent({ data }) {
                     </div>
                 </div>
 
-                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                    <h4 className="text-yellow-800 font-medium mb-2">Important Disclaimer</h4>
-                    <p className="text-yellow-700 text-sm">
-                        This is an automated matching system. Please consult with the patient's healthcare provider
-                        before considering any clinical trial participation. All trial eligibility must be verified
-                        by qualified medical professionals.
-                    </p>
+                <div>
+                    <h3 className="text-lg font-semibold text-gray-800 mb-4">Detailed Report</h3>
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <ReactMarkdown>
+                        {data?.detailed_report || "No Detail Report found."}
+                    </ReactMarkdown>
+                    </div>
                 </div>
+               
             </CardContent>
         </Card>
     )

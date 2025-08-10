@@ -80,3 +80,4 @@ function SizingContent({ data }) {
 }
 
 export default SizingContent
+

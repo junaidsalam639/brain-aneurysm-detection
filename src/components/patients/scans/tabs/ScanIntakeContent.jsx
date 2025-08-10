@@ -87,3 +87,4 @@ function ScanIntakeContent({ data }) {
 }
 
 export default ScanIntakeContent
+

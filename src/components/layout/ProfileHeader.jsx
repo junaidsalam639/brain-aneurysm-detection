@@ -66,7 +66,7 @@ export default function ProfileHeader() {
                         <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
                             <User className="w-4 h-4 text-red-600" />
                         </div>
-                        <span className="text-gray-700 font-medium">Dr. {user?.username}</span>
+                        <span className="text-gray-700 font-medium capitalize">{user?.username}</span>
                         <ChevronDown
                             className={`w-4 h-4 text-gray-500 transition-transform ${isDropdownOpen ? "rotate-180" : ""}`}
                         />
