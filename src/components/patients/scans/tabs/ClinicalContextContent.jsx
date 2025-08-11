@@ -44,8 +44,14 @@ function ClinicalContextContent({ data }) {
                             <span className="font-semibold capitalize">{data?.contextual_data?.sex}</span>
                         </div>
                         <div className="flex justify-between">
-                            <span className="text-gray-600">history:</span>
-                            <span className="font-semibold">{data?.contextual_data?.history}</span>
+                            <span className="text-gray-600">History:</span>
+                            <div className="flex flex-wrap gap-2">
+                                {data?.contextual_data?.history?.split(",")?.map((history, index) => (
+                                    <Badge key={index} className="bg-red-100 text-red-800 border-red-200">
+                                        {history}
+                                    </Badge>
+                                ))}
+                            </div>
                         </div>
                     </div>
                 </div>

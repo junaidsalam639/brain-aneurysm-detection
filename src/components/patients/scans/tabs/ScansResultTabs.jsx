@@ -14,6 +14,7 @@ import BillingContent from "./BillingContent"
 import ClinicalTrialsContent from "./ClinicalTrialsContent"
 import FeedbackSection from "./FeedbackSection"
 import PageLoader from "../../../ui/PageLoader"
+import ChatbotWidget from "../chat/ChatbotWidget"
 
 export default function ScansResultTabs({ scanResultData, isLoading }) {
     const [activeTab, setActiveTab] = useState("scan_intake_agent");
@@ -68,6 +69,8 @@ export default function ScansResultTabs({ scanResultData, isLoading }) {
         return <PageLoader />
     }
 
+    console.log(scanResultData, 'scanResultData')
+
     return (
         <>
             <Card className="p-4">
@@ -96,6 +99,7 @@ export default function ScansResultTabs({ scanResultData, isLoading }) {
                     {renderTabContent()}
                 </div>
             </Card>
+            <ChatbotWidget scanResultData={scanResultData} />
         </>
     )
 }

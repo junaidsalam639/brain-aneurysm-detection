@@ -3,7 +3,9 @@ import { useState } from "react";
 import { Button } from "../../../ui/Button";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../ui/Card"
 import { Eye, Grab, X } from 'lucide-react';
-import ReactMarkdown from 'react-markdown'
+import InnerImageZoom from 'react-inner-image-zoom'
+import 'react-inner-image-zoom/lib/styles.min.css'
+
 
 function ExplainabilityContent({ data }) {
     const [gradModal, setGradModal] = useState(false);
@@ -46,14 +48,11 @@ function ExplainabilityContent({ data }) {
                         </div>
                     </div>
 
-                    <div>
-                        <h3 className="text-lg font-semibold text-gray-800 mb-4">Diagnostic Report</h3>
-                        <div className="bg-white border border-gray-200 rounded-lg p-4 max-h-96 overflow-y-auto">
-                            <div
-                                className="max-w-none [&_h1]:text-3xl [&_h1]:font-bold [&_h2]:text-2xl [&_p]:text-base"
-                                dangerouslySetInnerHTML={{ __html: data?.diagnostic_report_html }}
-                            />
-                        </div>
+                    <div className="bg-white border border-gray-200 rounded-lg p-4">
+                        <div
+                            className="max-w-none [&_h1]:my-3 [&_h2]:my-3 [&_h1]:text-3xl [&_h1]:font-bold [&_h2]:text-2xl [&_p]:text-base"
+                            dangerouslySetInnerHTML={{ __html: data?.diagnostic_report_html }}
+                        />
                     </div>
 
                     {data?.gradcam_overlay_b64 && (
@@ -93,10 +92,9 @@ function GradModal({ data, setGradModal }) {
                     </CardHeader>
                     <CardContent className="space-y-6">
                         <div className="border border-gray-200 rounded-lg p-4">
-                            <img
-                                src={data?.gradcam_overlay_b64 || "/placeholder.svg"}
-                                alt="GradCAM Overlay"
-                                className="w-full max-w-md mx-auto rounded"
+                            <InnerImageZoom
+                                src={data?.gradcam_overlay_b64}
+                                zoomSrc={data?.gradcam_overlay_b64}
                             />
                         </div>
                     </CardContent>
@@ -105,4 +103,3 @@ function GradModal({ data, setGradModal }) {
         </>
     )
 }
-

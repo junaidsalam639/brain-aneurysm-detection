@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "../../../ui/Card"
-import {  FlaskConical } from 'lucide-react'
+import { FlaskConical } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
 import { Badge } from "../../../ui/badge"
 
@@ -93,15 +93,6 @@ function ClinicalTrialsContent({ data }) {
                     </div>
                 </div>
 
-                <div>
-                    <h3 className="text-lg font-semibold text-gray-800 mb-4">Detailed Report</h3>
-                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                    <ReactMarkdown>
-                        {data?.detailed_report || "No Detail Report found."}
-                    </ReactMarkdown>
-                    </div>
-                </div>
-               
             </CardContent>
         </Card>
     )

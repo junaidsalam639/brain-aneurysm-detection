@@ -32,11 +32,11 @@ function RuptureRiskContent({ data }) {
 
                 <div>
                     <h3 className="text-lg font-semibold text-gray-800 mb-4">Key Risk Factors</h3>
-                    <div className="space-y-2">
+                    <div className="flex flex-wrap gap-2">
                         {data?.risk_assessment?.key_risk_factors?.map((factor, index) => (
-                            <div key={index} className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
-                                <p className="text-yellow-800 text-sm">• {factor}</p>
-                            </div>
+                            <Badge key={index} className="bg-red-100 text-red-800 border-red-200">
+                                {factor}
+                            </Badge>
                         ))}
                     </div>
                 </div>
