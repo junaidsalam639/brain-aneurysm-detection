@@ -168,12 +168,6 @@ export default function UploadModal({ isOpen, onClose, patient }) {
               )}
             </Button>
           </div>
-
-          <div className="bg-blue-50 p-3 rounded-lg">
-            <p className="text-xs text-blue-800">
-              <strong>Supported Format:</strong> .nii (NIfTI) files only
-            </p>
-          </div>
         </CardContent>
       </Card>
     </div>

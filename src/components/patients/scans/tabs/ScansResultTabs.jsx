@@ -15,6 +15,7 @@ import ClinicalTrialsContent from "./ClinicalTrialsContent"
 import FeedbackSection from "./FeedbackSection"
 import PageLoader from "../../../ui/PageLoader"
 import ChatbotWidget from "../chat/ChatbotWidget"
+import SummaryContent from "./SummaryContent"
 
 export default function ScansResultTabs({ scanResultData, isLoading }) {
     const [activeTab, setActiveTab] = useState("scan_intake_agent");
@@ -31,6 +32,7 @@ export default function ScansResultTabs({ scanResultData, isLoading }) {
         { id: "rupture_risk_agent", label: "Rupture Risk", icon: AlertTriangle },
         { id: "billing_optimization_agent", label: "Billing", icon: DollarSign },
         { id: "clinical_trials_matching_agent", label: "Clinical Trials", icon: FlaskConical },
+        { id: "medical_summary_agent", label: "Medical Summary", icon: FileText },
         { id: "feed_back", label: "Feed Back", icon: MessageSquare }
     ]
 
@@ -58,6 +60,8 @@ export default function ScansResultTabs({ scanResultData, isLoading }) {
                 return <BillingContent data={scanResultData?.ai_result?.billing_optimization_agent} />
             case "clinical_trials_matching_agent":
                 return <ClinicalTrialsContent data={scanResultData?.ai_result?.clinical_trials_matching_agent} />
+            case "medical_summary_agent":
+                return <SummaryContent data={scanResultData?.ai_result?.medical_summary_agent} />
             case "feed_back":
                 return <FeedbackSection scanResultData={scanResultData} />
             default:
@@ -69,8 +73,6 @@ export default function ScansResultTabs({ scanResultData, isLoading }) {
         return <PageLoader />
     }
 
-    console.log(scanResultData, 'scanResultData')
-
     return (
         <>
             <Card className="p-4">
@@ -81,7 +83,7 @@ export default function ScansResultTabs({ scanResultData, isLoading }) {
                             <button
                                 key={tab?.id}
                                 onClick={() => setActiveTab(tab?.id)}
-                                className={`w-full bg-gray-100 h-12 text-left p-3 rounded-lg transition-all flex items-center space-x-3 ${activeTab === tab?.id
+                                className={`w-full text-nowrap bg-gray-100 h-12 text-left p-3 rounded-lg transition-all flex items-center space-x-3 ${activeTab === tab?.id
                                     ? "bg-red-50 text-red-700 border-l-4 border-red-600"
                                     : "text-gray-700"
                                     }`}
