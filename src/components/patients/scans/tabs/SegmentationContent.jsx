@@ -1,14 +1,14 @@
-import { Card, CardContent, CardHeader, CardTitle } from "../../../ui/Card"
-import { Scissors } from 'lucide-react'
+import { Card, CardContent, CardHeader, CardTitle } from "../../../ui/Card";
+import { Scissors } from "lucide-react";
 import { ScrollArea } from "../../../ui/scroll-area";
 import { useState } from "react";
-import Lightbox from "react-image-lightbox";
-import "react-image-lightbox/style.css";
-
+import Lightbox from "yet-another-react-lightbox";
+import "yet-another-react-lightbox/styles.css";
+import Fullscreen from "yet-another-react-lightbox/plugins/fullscreen";
+import Zoom from "yet-another-react-lightbox/plugins/zoom";
 
 function SegmentationContent({ data }) {
-    const [isOpen, setIsOpen] = useState(false);
-    const [photoIndex, setPhotoIndex] = useState(0);
+    const [photoIndex, setPhotoIndex] = useState(-1);
 
     const allImages = [
         ...(data?.region_images || []),
@@ -17,8 +17,7 @@ function SegmentationContent({ data }) {
     ];
 
     const openImage = (image) => {
-        setPhotoIndex(allImages?.indexOf(image));
-        setIsOpen(true);
+        setPhotoIndex(allImages.indexOf(image));
     };
 
     return (
@@ -29,6 +28,7 @@ function SegmentationContent({ data }) {
                     Image Segmentation Results
                 </CardTitle>
             </CardHeader>
+
             <CardContent className="space-y-6">
                 <ScrollArea className="h-96 rounded-md border">
                     <div className="flex gap-4">
@@ -83,26 +83,23 @@ function SegmentationContent({ data }) {
                     </div>
                 </ScrollArea>
 
-                {isOpen && (
-                    <Lightbox
-                        mainSrc={allImages[photoIndex]}
-                        nextSrc={allImages[(photoIndex + 1) % allImages?.length]}
-                        prevSrc={allImages[(photoIndex + allImages?.length - 1) % allImages?.length]}
-                        onCloseRequest={() => setIsOpen(false)}
-                        onMovePrevRequest={() =>
-                            setPhotoIndex(
-                                (photoIndex + allImages?.length - 1) % allImages?.length
-                            )
-                        }
-                        onMoveNextRequest={() =>
-                            setPhotoIndex((photoIndex + 1) % allImages?.length)
-                        }
-                    />
-                )}
-            </CardContent>
+                <Lightbox
+                    open={photoIndex >= 0}
+                    index={photoIndex}
+                    close={() => setPhotoIndex(-1)}
+                    slides={allImages.map((src) => ({ src }))}
+                    plugins={[Fullscreen, Zoom]}
+                    zoom={{
+                        maxZoomPixelRatio: 5, 
+                        zoomInLabel: "Zoom In",
+                        zoomOutLabel: "Zoom Out", 
+                        scrollToZoom: true, 
+                    }}
+                />
 
+            </CardContent>
         </Card>
-    )
+    );
 }
 
-export default SegmentationContent
+export default SegmentationContent;
