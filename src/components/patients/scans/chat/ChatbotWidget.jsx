@@ -1,16 +1,25 @@
-import { useState, useRef, useEffect } from "react";
+import {
+    useDeleteMessageMutation,
+    useGetMessageQuery,
+    useSendMessageMutation,
+} from "../../../../service/chatApi";
+import toast from "react-hot-toast";
 import { Button } from "../../../ui/Button";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../ui/Card";
 import { Input } from "../../../ui/Input";
-import { MessageSquare, Send, X, Brain, Loader } from "lucide-react";
-import toast from "react-hot-toast";
-import { useGetMessageQuery, useSendMessageMutation } from "../../../../service/chatApi";
+import { MessageSquare, Send, X, Brain, Loader, Trash2 } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import ReactMarkdown from 'react-markdown'
 
 export default function ChatbotWidget({ scanResultData }) {
     const { patient_id, scan_id } = scanResultData || {};
     const [isOpen, setIsOpen] = useState(false);
-    const { data, isLoading: isMessagesLoading } = useGetMessageQuery({ patient_id, scan_id });
+    const { data, isLoading: isMessagesLoading } = useGetMessageQuery({
+        patient_id,
+        scan_id,
+    });
     const [sendMessage, { isLoading: isSending }] = useSendMessageMutation();
+    const [deleteMessage, { isLoading: isDeleting }] = useDeleteMessageMutation();
     const [inputMessage, setInputMessage] = useState("");
     const messagesEndRef = useRef(null);
 
@@ -37,6 +46,17 @@ export default function ChatbotWidget({ scanResultData }) {
         }
     };
 
+    const handleClearChat = async () => {
+        if (!patient_id || !scan_id) return;
+        try {
+            await deleteMessage({ patient_id, scan_id }).unwrap();
+            toast.success("Chat cleared successfully");
+        } catch (error) {
+            console.error("Failed to clear chat:", error);
+            toast.error("Failed to clear chat");
+        }
+    };
+
     return (
         <>
             <Button
@@ -47,21 +67,46 @@ export default function ChatbotWidget({ scanResultData }) {
                 size="icon"
                 aria-label={isOpen ? "Close chat" : "Open chat"}
             >
-                {isOpen ? <X className="w-6 h-6" /> : <MessageSquare className="w-6 h-6" />}
+                {isOpen ? (
+                    <X className="w-6 h-6" />
+                ) : (
+                    <MessageSquare className="w-6 h-6" />
+                )}
             </Button>
 
             {isOpen && (
                 <Card
-                    className="fixed bottom-24 right-6 w-80 h-[400px] flex flex-col shadow-xl z-50 border border-gray-200
-                    transition-all duration-300 ease-in-out transform animate-slide-up">
+                    className="fixed bottom-24 right-6 w-96 h-[400px] flex flex-col shadow-xl z-50 border border-gray-200
+                    transition-all duration-300 ease-in-out transform animate-slide-up"
+                >
                     <CardHeader className="flex flex-row items-center justify-between p-4 border-b border-gray-200 bg-red-600 text-white rounded-t-lg">
                         <CardTitle className="text-lg font-bold flex items-center">
                             <Brain className="w-5 h-5 mr-2" />
                             Brain Aneurysm Detection
                         </CardTitle>
-                        <Button variant="ghost" size="sm" onClick={() => setIsOpen(false)} className="text-white">
-                            <X className="w-4 h-4" />
-                        </Button>
+                        <div className="flex items-center space-x-2">
+                            {data?.messages?.length > 0 && (
+                                <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={handleClearChat}
+                                    disabled={isDeleting}
+                                    className="text-white"
+                                    title="Clear Chat"
+                                >
+                                    <Trash2 className="w-4 h-4" />
+                                </Button>
+                            )}
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => setIsOpen(false)}
+                                className="text-white"
+                                title="Close"
+                            >
+                                <X className="w-4 h-4" />
+                            </Button>
+                        </div>
                     </CardHeader>
 
                     <CardContent className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
@@ -80,14 +125,14 @@ export default function ChatbotWidget({ scanResultData }) {
                                     {msg?.human && (
                                         <div className="flex justify-end">
                                             <div className="max-w-[75%] p-3 bg-red-600 text-white rounded-lg rounded-br-none shadow-sm">
-                                                <p className="text-sm">{msg.human}</p>
+                                                <ReactMarkdown>{msg?.human}</ReactMarkdown>
                                             </div>
                                         </div>
                                     )}
                                     {msg?.ai && (
                                         <div className="flex justify-start">
                                             <div className="max-w-[75%] p-3 bg-gray-200 text-gray-800 rounded-lg rounded-bl-none shadow-sm">
-                                                <p className="text-sm">{msg.ai}</p>
+                                                <ReactMarkdown>{msg?.ai}</ReactMarkdown>
                                             </div>
                                         </div>
                                     )}
@@ -97,7 +142,10 @@ export default function ChatbotWidget({ scanResultData }) {
                         <div ref={messagesEndRef} />
                     </CardContent>
 
-                    <form onSubmit={handleSendMessage} className="p-4 border-t border-gray-200 bg-white">
+                    <form
+                        onSubmit={handleSendMessage}
+                        className="p-4 border-t border-gray-200 bg-white"
+                    >
                         <div className="flex space-x-2">
                             <Input
                                 type="text"
@@ -112,7 +160,11 @@ export default function ChatbotWidget({ scanResultData }) {
                                 size="icon"
                                 className="bg-red-600 hover:bg-red-700 text-white"
                             >
-                                {isSending ? <Loader className="animate-spin w-4 h-4" /> : <Send className="w-4 h-4" />}
+                                {isSending ? (
+                                    <Loader className="animate-spin w-4 h-4" />
+                                ) : (
+                                    <Send className="w-4 h-4" />
+                                )}
                             </Button>
                         </div>
                     </form>
@@ -121,3 +173,5 @@ export default function ChatbotWidget({ scanResultData }) {
         </>
     );
 }
+
+

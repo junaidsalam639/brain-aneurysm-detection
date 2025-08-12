@@ -16,12 +16,22 @@ const chatApi = createAPI.injectEndpoints({
             },
             invalidatesTags: ["Chat"]
         }),
+        deleteMessage: build.mutation({
+            query: ({ patient_id, scan_id }) => {
+                return {
+                    url: `patients/${patient_id}/scans/${scan_id}/session`,
+                    method: "DELETE",
+                }
+            },
+            invalidatesTags: ["Chat"]
+        }),
     }),
 });
 
 export const {
     useGetMessageQuery,
     useSendMessageMutation,
+    useDeleteMessageMutation
 } = chatApi;
 
 
