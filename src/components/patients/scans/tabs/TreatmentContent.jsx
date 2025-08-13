@@ -140,9 +140,6 @@ export default function TreatmentContent({ data }) {
                             <p className="text-gray-500 italic">No alternative treatments suggested.</p>
                         )}
                     </div>
-                    <div className="text-right text-sm text-gray-500 mt-6">
-                        Analysis Timestamp: {new Date(analysis_timestamp).toLocaleString()} | Patient ID: {patient_id}
-                    </div>
                 </CardContent>
             </Card>
         </div>

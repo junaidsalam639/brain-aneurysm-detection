@@ -73,10 +73,11 @@ export default function ScansResultTabs({ scanResultData, isLoading }) {
         return <PageLoader />
     }
 
+
     return (
         <>
             <Card className="p-4">
-                <div className="space-y-2 grid md:grid-cols-6 gap-2 justify-center items-baseline">
+                <div className="space-y-2 grid md:grid-cols-5 gap-2 justify-center items-baseline">
                     {tabs?.map((tab) => {
                         const Icon = tab?.icon
                         return (

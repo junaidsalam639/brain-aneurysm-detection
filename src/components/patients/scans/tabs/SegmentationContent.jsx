@@ -34,6 +34,22 @@ function SegmentationContent({ data }) {
                     <div className="flex gap-4">
                         <div className="p-4 w-1/3">
                             <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                                Scan Frames
+                            </h3>
+                            <div className="grid grid-cols-1 gap-4 p-2">
+                                {data?.scan_frames?.map((image, index) => (
+                                    <img
+                                        key={index}
+                                        src={image || "/placeholder.svg"}
+                                        alt={`Scan Frame ${index + 1}`}
+                                        className="w-full h-full object-contain bg-gray-100 rounded cursor-pointer"
+                                        onClick={() => openImage(image)}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                        <div className="p-4 w-1/3">
+                            <h3 className="text-lg font-semibold text-gray-800 mb-4">
                                 Region Images
                             </h3>
                             <div className="grid grid-cols-1 gap-4 p-2">
@@ -64,22 +80,6 @@ function SegmentationContent({ data }) {
                                 ))}
                             </div>
                         </div>
-                        <div className="p-4 w-1/3">
-                            <h3 className="text-lg font-semibold text-gray-800 mb-4">
-                                Scan Frames
-                            </h3>
-                            <div className="grid grid-cols-1 gap-4 p-2">
-                                {data?.scan_frames?.map((image, index) => (
-                                    <img
-                                        key={index}
-                                        src={image || "/placeholder.svg"}
-                                        alt={`Scan Frame ${index + 1}`}
-                                        className="w-full h-full object-contain bg-gray-100 rounded cursor-pointer"
-                                        onClick={() => openImage(image)}
-                                    />
-                                ))}
-                            </div>
-                        </div>
                     </div>
                 </ScrollArea>
 
@@ -90,10 +90,10 @@ function SegmentationContent({ data }) {
                     slides={allImages.map((src) => ({ src }))}
                     plugins={[Fullscreen, Zoom]}
                     zoom={{
-                        maxZoomPixelRatio: 5, 
+                        maxZoomPixelRatio: 5,
                         zoomInLabel: "Zoom In",
-                        zoomOutLabel: "Zoom Out", 
-                        scrollToZoom: true, 
+                        zoomOutLabel: "Zoom Out",
+                        scrollToZoom: true,
                     }}
                 />
 

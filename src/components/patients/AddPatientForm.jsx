@@ -30,6 +30,7 @@ export default function AddPatientForm({ onSubmit, onCancel, isLoading }) {
             age: Yup.number()
                 .positive("Age must be positive")
                 .integer("Age must be a whole number")
+                .max(100, "Age cannot be more than 100")
                 .required("Age is required"),
             sex: Yup.string().oneOf(["male", "female"]).required("Sex is required"),
         }),

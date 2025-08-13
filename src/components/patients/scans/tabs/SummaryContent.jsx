@@ -17,7 +17,11 @@ function SummaryContent({ data }) {
                     {data?.comprehensive_summary?.summary_type?.split("_")?.join(" ")}
                 </h3>
                 <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                    <div dangerouslySetInnerHTML={{ __html: data?.comprehensive_summary?.medical_summary }} />
+                    <div
+                        dangerouslySetInnerHTML={{
+                            __html: data?.comprehensive_summary?.medical_summary?.replace(/```html|```/g, ""),
+                        }}
+                    />
                 </div>
             </CardContent>
         </Card>

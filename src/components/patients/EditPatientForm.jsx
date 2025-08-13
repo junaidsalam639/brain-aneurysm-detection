@@ -16,7 +16,7 @@ import { Button } from "../ui/Button"
 import { Input } from "../ui/Input"
 import { Label } from "../ui/Label"
 
-export default function EditPatientForm({ patient, onSubmit, onCancel ,isLoading }) {
+export default function EditPatientForm({ patient, onSubmit, onCancel, isLoading }) {
   const formik = useFormik({
     initialValues: {
       name: patient?.name,
@@ -29,6 +29,7 @@ export default function EditPatientForm({ patient, onSubmit, onCancel ,isLoading
       age: Yup.number()
         .positive("Age must be positive")
         .integer("Age must be a whole number")
+        .max(100, "Age cannot be more than 100")
         .required("Age is required"),
       sex: Yup.string().oneOf(["male", "female"]).required("Sex is required"),
     }),
@@ -105,9 +106,8 @@ export default function EditPatientForm({ patient, onSubmit, onCancel ,isLoading
                   className="sr-only"
                 />
                 <div
-                  className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
-                    formik.values.sex === "male" ? "bg-red-600 border-red-600" : "border-gray-300"
-                  }`}
+                  className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${formik.values.sex === "male" ? "bg-red-600 border-red-600" : "border-gray-300"
+                    }`}
                 >
                   {formik.values.sex === "male" && <div className="w-2 h-2 bg-white rounded-full" />}
                 </div>
@@ -126,9 +126,8 @@ export default function EditPatientForm({ patient, onSubmit, onCancel ,isLoading
                   className="sr-only"
                 />
                 <div
-                  className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
-                    formik.values.sex === "female" ? "bg-red-600 border-red-600" : "border-gray-300"
-                  }`}
+                  className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${formik.values.sex === "female" ? "bg-red-600 border-red-600" : "border-gray-300"
+                    }`}
                 >
                   {formik.values.sex === "female" && <div className="w-2 h-2 bg-white rounded-full" />}
                 </div>

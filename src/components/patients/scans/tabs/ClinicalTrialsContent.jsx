@@ -41,7 +41,7 @@ function ClinicalTrialsContent({ data }) {
                                 <span className="font-semibold">{data?.top_match.phase}</span>
                             </div>
                             <p className="text-green-700 mt-2">
-                                <strong>Match Reason:</strong> {data?.top_match.primary_reason}
+                                <strong>Match Reason:</strong> {data?.top_match.primary_reason?.replace(/:/g, "")}
                             </p>
                         </div>
                     </div>
