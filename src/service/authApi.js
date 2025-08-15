@@ -10,6 +10,7 @@ const authApi = createAPI.injectEndpoints({
           body: formData,
         };
       },
+      invalidatesTags: ["Patients", "Scan"]
     }),
     loginpApi: build.mutation({
       query: ({ formData }) => {
