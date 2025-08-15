@@ -70,19 +70,15 @@ export default function ScansIds({ patient }) {
             Upload New Scan
           </Button>
         </div>
-        {scanData?.length > 0 && (
+        {scanData?.scans?.length > 0 && (
           <div className="mt-4 space-y-2 grid md:grid-cols-6 gap-2 justify-center items-baseline">
-            {scanData?.map((scan) => (
+            {scanData?.scans?.map((scan) => (
               <button
                 key={scan?.scan_id}
                 onClick={() => handleTabClick(scan?.scan_id)}
                 className={`w-full p-3 rounded-lg flex h-12 items-center space-x-3 text-sm font-medium transition-all
-                            ${
-                              scanId === scan?.scan_id
-                                ? "bg-red-50 text-red-700 border-l-4 border-red-600"
-                                : "bg-gray-100 text-gray-700"
-                            }`}
-              >
+                ${scanId === scan?.scan_id ? "bg-red-50 text-red-700 border-l-4 border-red-600"
+                  : "bg-gray-100 text-gray-700"}`}>
                 <ScanEye className="w-5 h-5" />
                 <span>ID: {scan?.scan_id}</span>
               </button>

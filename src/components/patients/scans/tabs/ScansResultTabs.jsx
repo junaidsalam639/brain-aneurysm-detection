@@ -20,22 +20,6 @@ import SummaryContent from "./SummaryContent"
 export default function ScansResultTabs({ scanResultData, isLoading }) {
     const [activeTab, setActiveTab] = useState("scan_intake_agent");
 
-    const tabs = [
-        { id: "scan_intake_agent", label: "Scan Intake", icon: FileText },
-        { id: "classification_agent", label: "Classification", icon: Brain },
-        { id: "segmentation_agent", label: "Segmentation", icon: Scissors },
-        { id: "sizing_agent", label: "Sizing", icon: Ruler },
-        { id: "bias_detection_agent", label: "Bias Detection", icon: Shield },
-        { id: "explainability_agent", label: "Explainability", icon: Eye },
-        { id: "clinical_context_agent", label: "Clinical Context", icon: Stethoscope },
-        { id: "treatment_recommendations", label: "Treatment", icon: Pill },
-        { id: "rupture_risk_agent", label: "Rupture Risk", icon: AlertTriangle },
-        { id: "billing_optimization_agent", label: "Billing", icon: DollarSign },
-        { id: "clinical_trials_matching_agent", label: "Clinical Trials", icon: FlaskConical },
-        { id: "medical_summary_agent", label: "Medical Summary", icon: FileText },
-        { id: "feed_back", label: "Feed Back", icon: MessageSquare }
-    ]
-
     const renderTabContent = () => {
         switch (activeTab) {
             case "scan_intake_agent":
@@ -69,6 +53,88 @@ export default function ScansResultTabs({ scanResultData, isLoading }) {
         }
     }
 
+    const filteredTabs = [
+        scanResultData?.ai_result?.scan_intake_agent && {
+            id: "scan_intake_agent",
+            label: "Scan Intake",
+            icon: FileText,
+            content: <ScanIntakeContent data={scanResultData.ai_result.scan_intake_agent} />,
+        },
+        scanResultData?.ai_result?.classification_agent && {
+            id: "classification_agent",
+            label: "Classification",
+            icon: Brain,
+            content: <ClassificationContent data={scanResultData.ai_result.classification_agent} />,
+        },
+        scanResultData?.ai_result?.segmentation_agent && {
+            id: "segmentation_agent",
+            label: "Segmentation",
+            icon: Scissors,
+            content: <SegmentationContent data={scanResultData.ai_result.segmentation_agent} />,
+        },
+        scanResultData?.ai_result?.sizing_agent && {
+            id: "sizing_agent",
+            label: "Sizing",
+            icon: Ruler,
+            content: <SizingContent data={scanResultData.ai_result.sizing_agent} />,
+        },
+        scanResultData?.ai_result?.bias_detection_agent && {
+            id: "bias_detection_agent",
+            label: "Bias Detection",
+            icon: Shield,
+            content: <BiasDetectionContent data={scanResultData.ai_result.bias_detection_agent} />,
+        },
+        scanResultData?.ai_result?.explainability_agent && {
+            id: "explainability_agent",
+            label: "Explainability",
+            icon: Eye,
+            content: <ExplainabilityContent data={scanResultData.ai_result.explainability_agent} />,
+        },
+        scanResultData?.ai_result?.clinical_context_agent && {
+            id: "clinical_context_agent",
+            label: "Clinical Context",
+            icon: Stethoscope,
+            content: <ClinicalContextContent data={scanResultData.ai_result.clinical_context_agent} />,
+        },
+        scanResultData?.ai_result?.treatment_recommendations && {
+            id: "treatment_recommendations",
+            label: "Treatment",
+            icon: Pill,
+            content: <TreatmentContent data={scanResultData.ai_result.treatment_recommendations} />,
+        },
+        scanResultData?.ai_result?.rupture_risk_agent && {
+            id: "rupture_risk_agent",
+            label: "Rupture Risk",
+            icon: AlertTriangle,
+            content: <RuptureRiskContent data={scanResultData.ai_result.rupture_risk_agent} />,
+        },
+        scanResultData?.ai_result?.billing_optimization_agent && {
+            id: "billing_optimization_agent",
+            label: "Billing Optimization",
+            icon: DollarSign,
+            content: <BillingContent data={scanResultData.ai_result.billing_optimization_agent} />,
+        },
+        scanResultData?.ai_result?.clinical_trials_matching_agent && {
+            id: "clinical_trials_matching_agent",
+            label: "Clinical Trials",
+            icon: FlaskConical,
+            content: <ClinicalTrialsContent data={scanResultData.ai_result.clinical_trials_matching_agent} />,
+        },
+        scanResultData?.ai_result?.medical_summary_agent && {
+            id: "medical_summary_agent",
+            label: "Medical Summary",
+            icon: FileText,
+            content: <SummaryContent data={scanResultData.ai_result.medical_summary_agent} />,
+        },
+        {
+            id: "feed_back",
+            label: "Feedback",
+            icon: MessageSquare,
+            content: <FeedbackSection scanResultData={scanResultData} />,
+        },
+    ].filter(Boolean);
+
+
     if (isLoading) {
         return <PageLoader />
     }
@@ -78,21 +144,21 @@ export default function ScansResultTabs({ scanResultData, isLoading }) {
         <>
             <Card className="p-4">
                 <div className="space-y-2 grid md:grid-cols-5 gap-2 justify-center items-baseline">
-                    {tabs?.map((tab) => {
-                        const Icon = tab?.icon
+                    {filteredTabs?.map((tab) => {
+                        const Icon = tab.icon;
                         return (
                             <button
-                                key={tab?.id}
-                                onClick={() => setActiveTab(tab?.id)}
-                                className={`w-full text-nowrap bg-gray-100 h-12 text-left p-3 rounded-lg transition-all flex items-center space-x-3 ${activeTab === tab?.id
+                                key={tab.id}
+                                onClick={() => setActiveTab(tab.id)}
+                                className={`w-full text-nowrap bg-gray-100 h-12 text-left p-3 rounded-lg transition-all flex items-center space-x-3 ${activeTab === tab.id
                                     ? "bg-red-50 text-red-700 border-l-4 border-red-600"
                                     : "text-gray-700"
                                     }`}
                             >
                                 <Icon className="w-5 h-5" />
-                                <span className="text-sm font-medium">{tab?.label}</span>
+                                <span className="text-sm font-medium">{tab.label}</span>
                             </button>
-                        )
+                        );
                     })}
                 </div>
 
