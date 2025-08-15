@@ -1,4 +1,3 @@
-import { useState } from "react"
 import { Card } from "../../../ui/Card"
 import { FileText, Brain, Scissors, Ruler, Shield, Eye, Stethoscope, Pill, AlertTriangle, DollarSign, FlaskConical, MessageSquare } from 'lucide-react'
 import ScanIntakeContent from "./ScanIntakeContent"
