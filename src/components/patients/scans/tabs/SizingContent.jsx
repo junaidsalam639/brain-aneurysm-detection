@@ -67,7 +67,9 @@ function SizingContent({ data }) {
                     </div>
                     <div className="bg-cyan-50 border border-cyan-200 rounded-lg p-4 text-center">
                         <p className="text-cyan-800 font-medium text-sm">Pixel to mm Ratio</p>
-                        <p className="text-lg font-bold text-cyan-900">{data?.summary.pixel_to_mm_ratio}</p>
+                     <p className="text-lg font-bold text-cyan-900">
+                         {data?.summary?.pixel_to_mm_ratio ? Number(data?.summary.pixel_to_mm_ratio)?.toFixed(1) : ""}
+                    </p>
                     </div>
                 </div>
                 <div>
