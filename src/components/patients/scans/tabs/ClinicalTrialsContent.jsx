@@ -50,29 +50,29 @@ function ClinicalTrialsContent({ data }) {
                 <div>
                     <h3 className="text-lg font-semibold text-gray-800 mb-4">All Matching Trials</h3>
                     <div className="space-y-3 max-h-96 overflow-y-auto">
-                        {data?.trials.map((trial, index) => (
+                        {data?.trials?.map((trial, index) => (
                             <div key={index} className="bg-gray-50 border border-gray-200 rounded-lg p-4">
                                 <div className="flex justify-between items-start mb-2">
-                                    <h4 className="text-gray-800 font-medium text-sm flex-1 mr-2">{trial.title}</h4>
-                                    <Badge className="bg-blue-100 text-blue-800 text-xs">{trial.match_score}%</Badge>
+                                    <h4 className="text-gray-800 font-medium text-sm flex-1 mr-2">{trial?.title}</h4>
+                                    <Badge className="bg-blue-100 text-blue-800 text-xs">{trial?.match_score}%</Badge>
                                 </div>
                                 <div className="space-y-1 text-xs text-gray-600">
                                     <div className="flex justify-between">
                                         <span>NCT ID:</span>
-                                        <span className="font-semibold">{trial.nct_id}</span>
+                                        <span className="font-semibold">{trial?.nct_id}</span>
                                     </div>
                                     <div className="flex justify-between">
                                         <span>Status:</span>
-                                        <span className="font-semibold">{trial.status}</span>
+                                        <span className="font-semibold">{trial?.status}</span>
                                     </div>
                                     <div className="flex justify-between">
                                         <span>Location:</span>
-                                        <span className="font-semibold">{trial.location}</span>
+                                        <span className="font-semibold">{trial?.location}</span>
                                     </div>
                                 </div>
                                 <div className="mt-2">
                                     <a
-                                        href={trial.clinicaltrials_url}
+                                        href={trial?.clinicaltrials_url}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="text-red-600 hover:text-red-700 text-xs font-medium"

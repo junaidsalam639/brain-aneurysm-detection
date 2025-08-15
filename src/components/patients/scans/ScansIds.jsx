@@ -15,6 +15,7 @@ import { setScanId } from "../../../redux/scanIdSlice";
 export default function ScansIds({ patient }) {
   const dispatch = useDispatch();
   const { scanId } = useSelector((state) => state.scanId);
+  const [activeTab, setActiveTab] = useState("scan_intake_agent");
   const [isUploadModalOpen, setIsUploadModalOpen] = useState("");
   const [localLoading, setLocalLoading] = useState(false);
   const { data: scanData, isLoading } = useGetScansQuery({
@@ -36,6 +37,7 @@ export default function ScansIds({ patient }) {
   }
 
   const handleTabClick = async (scanId) => {
+    setActiveTab("scan_intake_agent");
     dispatch(setScanId(scanId));
     setLocalLoading(true);
     try {
@@ -78,7 +80,7 @@ export default function ScansIds({ patient }) {
                 onClick={() => handleTabClick(scan?.scan_id)}
                 className={`w-full p-3 rounded-lg flex h-12 items-center space-x-3 text-sm font-medium transition-all
                 ${scanId === scan?.scan_id ? "bg-red-50 text-red-700 border-l-4 border-red-600"
-                  : "bg-gray-100 text-gray-700"}`}>
+                    : "bg-gray-100 text-gray-700"}`}>
                 <ScanEye className="w-5 h-5" />
                 <span>ID: {scan?.scan_id}</span>
               </button>
@@ -91,6 +93,8 @@ export default function ScansIds({ patient }) {
         <ScansResultTabs
           scanResultData={scanResultData}
           isLoading={localLoading}
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
         />
       )}
 

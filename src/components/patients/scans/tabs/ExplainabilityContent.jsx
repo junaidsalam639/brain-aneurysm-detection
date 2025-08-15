@@ -25,24 +25,24 @@ function ExplainabilityContent({ data }) {
                         <div className="grid grid-cols-2 gap-4">
                             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                                 <h4 className="text-blue-800 font-medium text-sm mb-2">Image Dimensions</h4>
-                                <p className="text-blue-900 font-semibold">{data?.image_statistics.image_dimensions.join(' × ')}</p>
+                                <p className="text-blue-900 font-semibold">{data?.image_statistics?.image_dimensions?.join(' × ')}</p>
                             </div>
                             <div className="bg-green-50 border border-green-200 rounded-lg p-4">
                                 <h4 className="text-green-800 font-medium text-sm mb-2">Voxel Size</h4>
                                 <p className="text-green-900 font-semibold">
-                                    {data?.image_statistics.voxel_size.map((v) => v.toFixed(3)).join(' × ')}
+                                    {data?.image_statistics?.voxel_size?.map((v) => v.toFixed(3)).join(' × ')}
                                 </p>
                             </div>
                             <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
                                 <h4 className="text-purple-800 font-medium text-sm mb-2">Intensity Range</h4>
                                 <p className="text-purple-900 font-semibold">
-                                    {data?.image_statistics.intensity_range[0]} - {data?.image_statistics.intensity_range[1]}
+                                    {data?.image_statistics?.intensity_range[0]} - {data?.image_statistics?.intensity_range[1]}
                                 </p>
                             </div>
                             <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
                                 <h4 className="text-orange-800 font-medium text-sm mb-2">Mean Intensity</h4>
                                 <p className="text-orange-900 font-semibold">
-                                    {data?.image_statistics.mean_intensity.toFixed(2)}
+                                    {data?.image_statistics?.mean_intensity.toFixed(2)}
                                 </p>
                             </div>
                         </div>

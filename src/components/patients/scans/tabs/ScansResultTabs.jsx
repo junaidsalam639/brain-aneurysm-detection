@@ -17,8 +17,7 @@ import PageLoader from "../../../ui/PageLoader"
 import ChatbotWidget from "../chat/ChatbotWidget"
 import SummaryContent from "./SummaryContent"
 
-export default function ScansResultTabs({ scanResultData, isLoading }) {
-    const [activeTab, setActiveTab] = useState("scan_intake_agent");
+export default function ScansResultTabs({ scanResultData, isLoading, activeTab, setActiveTab }) {
 
     const renderTabContent = () => {
         switch (activeTab) {

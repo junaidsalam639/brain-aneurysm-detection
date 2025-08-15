@@ -63,11 +63,11 @@ function ClinicalContextContent({ data }) {
                     </div>
                 </div>
 
-                {data?.recommendations && data?.recommendations.length > 0 && (
+                {data?.recommendations && data?.recommendations?.length > 0 && (
                     <div>
                         <h3 className="text-lg font-semibold text-gray-800 mb-4">Recommendations</h3>
                         <div className="space-y-2">
-                            {data?.recommendations.map((rec, index) => (
+                            {data?.recommendations?.map((rec, index) => (
                                 <div key={index} className="bg-green-50 border border-green-200 rounded-lg p-3">
                                     <p className="text-green-800 text-sm">• {rec}</p>
                                 </div>
@@ -76,11 +76,11 @@ function ClinicalContextContent({ data }) {
                     </div>
                 )}
 
-                {data?.key_factors && data?.key_factors.length > 0 && (
+                {data?.key_factors && data?.key_factors?.length > 0 && (
                     <div>
                         <h3 className="text-lg font-semibold text-gray-800 mb-4">Key Factors</h3>
                         <div className="flex flex-wrap gap-2">
-                            {data?.key_factors.map((factor, index) => (
+                            {data?.key_factors?.map((factor, index) => (
                                 <Badge key={index} className="bg-red-100 text-red-800 border-red-200">
                                     {factor}
                                 </Badge>
@@ -89,11 +89,11 @@ function ClinicalContextContent({ data }) {
                     </div>
                 )}
 
-                {data?.immediate_actions && data?.immediate_actions.length > 0 && (
+                {data?.immediate_actions && data?.immediate_actions?.length > 0 && (
                     <div>
                         <h3 className="text-lg font-semibold text-gray-800 mb-4">Immediate Actions</h3>
                         <div className="space-y-2">
-                            {data?.immediate_actions.map((rec, index) => (
+                            {data?.immediate_actions?.map((rec, index) => (
                                 <div key={index} className="bg-green-50 border border-green-200 rounded-lg p-3">
                                     <p className="text-green-800 text-sm">• {rec}</p>
                                 </div>
