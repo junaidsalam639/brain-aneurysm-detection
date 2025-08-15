@@ -10,7 +10,7 @@ const authApi = createAPI.injectEndpoints({
           body: formData,
         };
       },
-      invalidatesTags: ["Patients", "Scan"]
+      invalidatesTags: ["Patients", "Scan", "ScansResult", "Chat"]
     }),
     loginpApi: build.mutation({
       query: ({ formData }) => {
@@ -20,7 +20,7 @@ const authApi = createAPI.injectEndpoints({
           body: formData,
         };
       },
-      invalidatesTags: ["Patients", "Scan"]
+      invalidatesTags: ["Patients", "Scan", "ScansResult", "Chat"]
     }),
     profileApi: build.mutation({
       query: ({ formData }) => {
